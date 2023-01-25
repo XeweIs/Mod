@@ -1,0 +1,20 @@
+{
+  "flame": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "current-magic:fire",
+        "stream": true
+      }
+    ]
+  },
+  "extinguish": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "current-magic:extinguish",
+        "stream": true
+      }
+    ]
+  }
+}
