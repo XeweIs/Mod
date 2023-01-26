@@ -116,11 +116,11 @@ public class AbilityMech {
         if(Event.extra.contains("Shift")) {
             playerc.motionX = -playerLook.scale(1).x;
             playerc.motionZ = -playerLook.scale(1).z;
-            playerc.motionY = -0.5;
+            playerc.motionY = -0.1;
         }else{
             playerc.motionX = playerLook.scale(1).x;
             playerc.motionZ = playerLook.scale(1).z;
-            playerc.motionY = 0.5;
+            playerc.motionY = 0.1;
         }
 
         playerc.setInvisible(i!=2);
@@ -144,38 +144,6 @@ public class AbilityMech {
 
     public static void Und(EntityPlayer player){
         Entity enemy = Methods.entityR(Event.world, (float)player.posX, (float)player.posY, (float)player.posZ, 4, player);
-
     }
-//    public static void BackSpurt(EntityPlayer player){
-//        Thread ThreadSpurt = new Thread(() -> {
-//            cdsp = false;
-//            Vec3d playerLook = player.getLookVec();
-//
-//            player.getWorldScoreboard().createTeam(String.valueOf(player.getEntityId()));
-//            player.getWorldScoreboard().addPlayerToTeam(player.getName(), String.valueOf(player.getEntityId()));
-//            ScorePlayerTeam playerTeam = player.getWorldScoreboard().getTeam(String.valueOf(player.getEntityId()));
-//            playerTeam.setSeeFriendlyInvisiblesEnabled(true);
-//
-//            for (byte i = 0; i < 10; i++) {
-//                player.motionX = -playerLook.scale(0.5).x;
-//                player.motionZ = -playerLook.scale(0.5).z;
-//                player.motionY = -playerLook.scale(0.5).y;
-//                player.setInvisible(i < 9);
-//
-//                if(i == 9) {
-//                    player.getWorldScoreboard().removeTeam(playerTeam);
-//                }
-//
-//                try{
-//                    Thread.sleep(30);
-//                } catch(InterruptedException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        });
-//        if(cdsp) {
-//            ThreadSpurt.start();
-//        }
-//    }
 
 }

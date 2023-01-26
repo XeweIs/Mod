@@ -30,7 +30,6 @@ public class MainClass
     @EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.init(event);
-//        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @EventHandler
@@ -38,27 +37,5 @@ public class MainClass
         proxy.postInit(event);
     }
 
-//    private final int[] keys = {
-//            Keyboard.KEY_1,
-//            Keyboard.KEY_2,
-//            Keyboard.KEY_3,
-//            Keyboard.KEY_4,
-//            Keyboard.KEY_5,
-//            Keyboard.KEY_6,
-//            Keyboard.KEY_7,
-//            Keyboard.KEY_8,
-//            Keyboard.KEY_9,
-//            Keyboard.KEY_0
-//    };
-//
-//    @SubscribeEvent
-//    public void onKeyPressed(InputEvent.KeyInputEvent event) {
-//        if(Event.world.isRemote) {
-//            for (int key : keys)
-//                if (Keyboard.isKeyDown(key)) {
-//                    new ExamplePacket1(key).sendToServer();
-//                    return;
-//                }
-//        }
-//    }
+
 }

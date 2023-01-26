@@ -14,10 +14,6 @@ public class Sounds {
 
     @SubscribeEvent
     public void registerSounds(RegistryEvent.Register<SoundEvent> e) {
-//        SoundEvent[] sounds = {flame, extinguish};
-//        for(SoundEvent sound : sounds) {
-//            ForgeRegistries.SOUND_EVENTS.register(sound);
-//        }
         ForgeRegistries.SOUND_EVENTS.register(flame);
         ForgeRegistries.SOUND_EVENTS.register(extinguish);
     }

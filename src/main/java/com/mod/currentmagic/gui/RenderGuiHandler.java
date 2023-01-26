@@ -8,6 +8,6 @@ public class RenderGuiHandler {
     @SubscribeEvent
     public void onRenderGui(RenderGameOverlayEvent.Post event) {
         if (event.getType() != RenderGameOverlayEvent.ElementType.EXPERIENCE) return;
-        new GuiExample(Minecraft.getMinecraft());
+        new TextCd(Minecraft.getMinecraft());
     }
 }
