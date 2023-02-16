@@ -1,22 +1,19 @@
 package com.mod.currentmagic;
 
 import com.mod.currentmagic.proxy.CommonProxy;
+import com.mod.currentmagic.util.Constants;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import org.apache.logging.log4j.Logger;
 
-@Mod(modid = MainClass.MODID, name = MainClass.NAME, version = MainClass.VERSION)
+@Mod(modid = Constants.MODID, name = Constants.NAME, version = Constants.VERSION)
 public class MainClass
 {
-    public static final String MODID = "current-magic";
-    public static final String NAME = "Current Magic";
-    public static final String VERSION = "1.0";
-
-    private static Logger logger;
+    @Mod.Instance
+    public static MainClass instance;
 
     @SidedProxy(clientSide = "com.mod.currentmagic.proxy.ClientProxy", serverSide = "com.mod.currentmagic.proxy.CommonProxy")
     public static CommonProxy proxy;
@@ -24,7 +21,6 @@ public class MainClass
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         proxy.preInit(event);
-        logger = event.getModLog();
     }
 
     @EventHandler

@@ -1,6 +1,6 @@
 package com.mod.currentmagic.playercap;
 
-import com.mod.currentmagic.MainClass;
+import com.mod.currentmagic.util.Constants;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -8,7 +8,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class CapabilityHandler {
-    public static final ResourceLocation ABILITY_CAP = new ResourceLocation(MainClass.MODID, "ability");
+    public static final ResourceLocation ABILITY_CAP = new ResourceLocation(Constants.MODID, "ability");
 
     @SubscribeEvent
     public void attachCapability(AttachCapabilitiesEvent<Entity> event)

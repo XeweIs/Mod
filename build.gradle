@@ -5,13 +5,17 @@ buildscript {
             name = "forge"
             url = "https://files.minecraftforge.net/maven"
         }
+        mavenCentral()
+        maven {
+            name = "Snapshot repo"
+            url = "https://oss.sonatype.org/service/local/repositories/iogitlabhohserg-1051/content/"
+        }
         maven {
             url 'https://plugins.gradle.org/m2/'
         }
         maven {
             url = 'https://repo.spongepowered.org/maven'
         }
-        mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
@@ -61,6 +65,7 @@ dependencies {
     compileOnly "io.gitlab.hohserg.elegant.networking:annotation-processor:3.14"
     annotationProcessor "io.gitlab.hohserg.elegant.networking:annotation-processor:3.14"
 
+    compileOnly 'org.projectlombok:lombok:1.18.10'
 }
 
 jar {
@@ -77,10 +82,6 @@ jar {
     }
 }
 
-// Example configuration to allow publishing using the maven-publish task
-// This is the preferred method to reobfuscate your jar file
-// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
-//publish.dependsOn('reobfJar')
 jar.finalizedBy('reobfJar')
 
 publishing {
@@ -122,3 +123,4 @@ compileJava.options.encoding = 'UTF-8'
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
+

@@ -4,10 +4,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class RenderGuiHandler {
+public class RenderGui {
     @SubscribeEvent
     public void onRenderGui(RenderGameOverlayEvent.Post event) {
         if (event.getType() != RenderGameOverlayEvent.ElementType.EXPERIENCE) return;
-        new TextCd(Minecraft.getMinecraft());
+        new CoolDownText(Minecraft.getMinecraft());
     }
 }

@@ -10,7 +10,6 @@ public class AbilityProvider implements ICapabilitySerializable<NBTBase>
 {
     @CapabilityInject(IAbility.class)
     public static final Capability<IAbility> ABILITY_CAP = null;
-
     private IAbility instance = ABILITY_CAP.getDefaultInstance();
 
     @Override
