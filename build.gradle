@@ -51,13 +51,6 @@ minecraft {
     }
 }
 
-repositories {
-    maven {
-        name = "Snapshot repo"
-        url = "https://oss.sonatype.org/service/local/repositories/iogitlabhohserg-1051/content/"
-    }
-}
-
 dependencies {
     minecraft /*'net.minecraftforge:forge:1.12.2-14.23.5.2855',*/ 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
 

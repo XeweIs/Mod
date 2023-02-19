@@ -5,25 +5,24 @@ import hohserg.elegant.networking.api.ElegantPacket;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
 
 @ElegantPacket
-public class SPacketSound implements ClientToServerPacket {
-    final BlockPos pos;
+public class CPacketSound implements ClientToServerPacket {
     final SoundEvent sound;
     final SoundCategory soundCategory;
-    final float volume;
-    final float pitch;
-    public SPacketSound(BlockPos pos, SoundEvent sound, SoundCategory soundCategory, float volume, float pitch){
-        this.pos = pos;
+    final float x, y, z, volume, pitch;
+    public CPacketSound(SoundEvent sound, SoundCategory soundCategory, float x, float y, float z, float volume, float pitch){
         this.sound = sound;
         this.soundCategory = soundCategory;
+        this.x = x;
+        this.y = y;
+        this.z = z;
         this.volume = volume;
         this.pitch = pitch;
     }
 
     @Override
     public void onReceive(EntityPlayerMP player) {
-        player.world.playSound(null, pos, sound, soundCategory, volume, pitch);
+        player.world.playSound(null, x, y, z, sound, soundCategory, volume, pitch);
     }
 }
