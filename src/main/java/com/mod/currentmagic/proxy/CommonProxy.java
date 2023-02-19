@@ -5,6 +5,7 @@ import com.mod.currentmagic.events.Event;
 import com.mod.currentmagic.playercap.CapabilityHandler;
 import com.mod.currentmagic.playercap.IAbility;
 import com.mod.currentmagic.playercap.AbilityStorage;
+import com.mod.currentmagic.util.Methods;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -14,16 +15,11 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class CommonProxy
 {
     public void preInit(FMLPreInitializationEvent event) {
-//        MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
-//        MinecraftForge.EVENT_BUS.register(new Event());
-//        MinecraftForge.EVENT_BUS.register(new LineFire());
-//        MinecraftForge.EVENT_BUS.register(new Ability());
         Object[] events = {
                 new CapabilityHandler(),
                 new Event(),
-                new Ability(),
         };
-        registerEvents(events);
+        Methods.registerEvents(events);
 
         CapabilityManager.INSTANCE.register(IAbility.class, new AbilityStorage(), com.mod.currentmagic.playercap.Ability.class);
     }
@@ -34,10 +30,6 @@ public class CommonProxy
     public void postInit(FMLPostInitializationEvent event) {
     }
 
-    public void registerEvents(Object[] e){
-        for(Object object : e){
-            MinecraftForge.EVENT_BUS.register(object);
-        }
-    }
+
 
 }

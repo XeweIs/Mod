@@ -2,80 +2,117 @@ package com.mod.currentmagic.ability;
 
 import com.mod.currentmagic.gui.CoolDownText;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+
+import java.util.ArrayList;
+
 public class Ability{
     enum Status {active, nonacitve}
     Status statusAbility = Status.nonacitve;
     Status statusCoolDown = Status.nonacitve;
-    public int cooldown, maxcooldown;
+    public int coolDown;
     public String name;
     public EntityPlayer player;
-    private short period, maxperiod, repeat;
+    public Vec3d playerVec, playerPosVec;
+    public float playerEyeHeight;
+    private short period, maxPeriod;
+    public short repeat, maxRepeat;
 
     protected void setPeriod(short period){
         //Если кулдаун на данную способность наложен
         if(statusCoolDown.equals(Status.active)) return;
 
         this.period = period;
-        this.maxperiod = period;
+        this.maxPeriod = period;
     }
     protected void setRepeat(short repeat){
         if(statusCoolDown.equals(Status.active)) return;
 
         this.repeat = repeat;
+        this.maxRepeat = repeat;
     }
-    protected void setCooldown(int cooldown){
+    protected void setCoolDown(int coolDown){
         if(statusCoolDown.equals(Status.active)) return;
 
-        this.cooldown = cooldown * 40;
-        this.maxcooldown = cooldown * 40;
+        this.coolDown = (coolDown * 160)-1;
     }
+
     @SubscribeEvent
-    public void onTick(TickEvent.WorldTickEvent event) {
+    public void onTickAbility(TickEvent event) {
+        if(event.side.isServer()) return;
+
         //Если активен статус способности, то есть если её юзнули.
         if (statusAbility.equals(Status.active)) {
             period--; //Каждый тик уменьшаем период. Период отвечает за частоту обновления (запуска onUpdate)активной способности.
 
             if (period == 0) {
-                onUpdate();
-                period = maxperiod; //Устанавливаем изначальное значение периода и так по кругу.
-                repeat--; //Уменьшаем количество повторений.
+                //Если апдейт прошёл успешно
+                if(onUpdate()){
+                    period = maxPeriod; //Устанавливаем изначальное значение периода и так по кругу.
+                    repeat--; //Уменьшаем количество повторений.
 
-                //Вследствие этого мы можем контролировать сколько раз нам обновлять активную способность и когда завершать этот процесс.
-                if (repeat == 0) {
-                    statusAbility = Status.nonacitve;
+                    //Вследствие этого мы можем контролировать сколько раз нам обновлять активную способность и когда завершать этот процесс.
+                    if (repeat == 0) {
+                        onExit();
+                    }
+                }else{
+                    //Данным методом отменяем всю способность.
+                    onExit();
                 }
             }
         }
 
         //Если наложили кулдаун...
         if(statusCoolDown.equals(Status.active)){
-            cooldown--;
 
-            //Данная проверка предотвращает забитость коллекции одним именем кулдауна
-            if(!CoolDownText.text.contains(name +" "+ (cooldown / 40))) {
-                CoolDownText.text.remove(name +" "+ ((cooldown / 40) + 1)); //Убираем отображение кулдауна предыдущей секунды
-                CoolDownText.text.add(name +" "+ (cooldown / 40)); //Добавляем отображение текущего кулдауна в актбар
+            //Если вдруг игрок умрёт во время кулдауна, он у него сбросится.
+            if(player.isDead){
+                statusCoolDown = Status.nonacitve;
+                CoolDownText.text = new ArrayList<>();
+                return;
             }
 
-            //Ставим всё на место при завершении кулдауна.
-            if(cooldown == 0){
-                CoolDownText.text.remove(name +" "+ 0);
+            coolDown--;
+            String pretext = "§m" + name + " " + ((coolDown / 160) + 2) + "§r";
+            String initext = "§m" + name + " " + ((coolDown / 160) + 1) + "§r";
+
+            //Данная проверка даёт знать когда нам обновлять текст в актбаре, а когда его стоит и вовсе удалить, а за одно завершить этот процесс.
+            if(!CoolDownText.text.contains(initext)) {
+                CoolDownText.text.remove(pretext);
+                CoolDownText.text.add(initext);
+            }
+            if (coolDown == 0) {
+                CoolDownText.text.remove(initext);
                 statusCoolDown = Status.nonacitve;
+                MinecraftForge.EVENT_BUS.unregister(this);
             }
         }
     }
+
+    //Начало способности
     public void start(EntityPlayer player){
         if(statusCoolDown.equals(Status.active)) return;
 
+        MinecraftForge.EVENT_BUS.register(this);
         statusAbility = Status.active; //Указываем, что способность активирована
         statusCoolDown = Status.active; //Накладываем кулдаун
         this.player = player;
+        this.playerVec = player.getLookVec();
+        this.playerEyeHeight = player.eyeHeight;
+        this.playerPosVec = player.getPositionVector();
     }
-    protected void onUpdate(){
-        //Здесь ничего не пишем, но оставляем этот метод, т.к. всё равно будем переопределять его в классе-наследнике
+
+    //Обновление способности
+    protected boolean onUpdate(){
+        return false;
+    }
+
+    //Завершение способности
+    protected void onExit(){
+        statusAbility = Status.nonacitve;
     }
 }

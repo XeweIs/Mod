@@ -4,8 +4,10 @@ import com.google.common.base.Function;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 
 public class Methods {
@@ -22,5 +24,30 @@ public class Methods {
                         return Comparator.comparing((Function<Entity, Double>) (a -> a.getDistanceSq(_x, _y, _z)));
                     }
                 }.compareDistOf(x, y, z)).filter(a -> a != ex).orElse(null));
+
+
+    }
+
+    public static void registerEvents(Object[] e){
+        for(Object object : e){
+            MinecraftForge.EVENT_BUS.register(object);
+        }
+    }
+
+    public enum Format{strike, lardy, ital}
+    static String str;
+    public static String FormatMc(String string, Format[] format){
+        str = string;
+        if(Arrays.toString(format).contains("strike")){
+            str = "§m"+str;
+        }
+        if(Arrays.toString(format).contains("lardy")){
+            str = "§l"+str;
+        }
+        if(Arrays.toString(format).contains("ital")){
+            str = "§o"+str;
+        }
+
+        return str+"§r";
     }
 }
