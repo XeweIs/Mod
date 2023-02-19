@@ -12,6 +12,6 @@ public class CoolDownText extends Gui {
         ScaledResolution scaled = new ScaledResolution(mc);
         int width = scaled.getScaledWidth();
         int height = scaled.getScaledHeight();
-        if(text != null) drawCenteredString(mc.fontRenderer, String.join("  ", text), width / 2, height - 60, Integer.parseInt("FF6C61", 16));
+        if(!text.isEmpty()) drawCenteredString(mc.fontRenderer, String.join("  ", text), width / 2, height - 60, Integer.parseInt("FF6C61", 16));
     }
 }
