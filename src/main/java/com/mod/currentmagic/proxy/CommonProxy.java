@@ -1,12 +1,10 @@
 package com.mod.currentmagic.proxy;
 
-import com.mod.currentmagic.ability.Ability;
-import com.mod.currentmagic.events.Event;
+import com.mod.currentmagic.events.CastEvent;
 import com.mod.currentmagic.playercap.CapabilityHandler;
 import com.mod.currentmagic.playercap.IAbility;
 import com.mod.currentmagic.playercap.AbilityStorage;
 import com.mod.currentmagic.util.Methods;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -17,7 +15,7 @@ public class CommonProxy
     public void preInit(FMLPreInitializationEvent event) {
         Object[] events = {
                 new CapabilityHandler(),
-                new Event(),
+                new CastEvent(),
         };
         Methods.registerEvents(events);
 

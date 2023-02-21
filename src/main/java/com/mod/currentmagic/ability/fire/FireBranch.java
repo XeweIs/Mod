@@ -12,20 +12,19 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.common.MinecraftForge;
 
 public class FireBranch extends Ability {
 
         public static final FireBranch ability = new FireBranch();
         public static AABB aFireBranch;
         float x, y, z;
+
         public void start(EntityPlayer player){
-                this.name = "Fire Branch";
-                this.setCoolDown(5);
-                this.setPeriod((short) 6);
-                this.setRepeat((short) 10);
-                super.start(player);
+                if(statusCoolDown.equals(Status.active)) return;
+
+                super.start(player, "Fire Branch", "§c", 5, (short)6, (short)10);
         }
+
         @Override
         protected boolean onUpdate(){
 
@@ -38,7 +37,7 @@ public class FireBranch extends Ability {
                         player.world.getBlockState(new BlockPos(x, y, z)).getBlock().equals(Blocks.WATER)) return false;
 
                 new CPacketSound(SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.PLAYERS, x, y, z, 1f, 1f).sendToServer();
-                new CPacketParticle(EnumParticleTypes.FLAME, x, y, z, 2).sendToServer();
+                new CPacketParticle(EnumParticleTypes.FLAME, x, y, z, 4).sendToServer();
                 new CPacketDamageAABB(aFireBranch).sendToServer();
 
                 return true;

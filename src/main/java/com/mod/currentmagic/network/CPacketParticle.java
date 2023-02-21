@@ -9,8 +9,8 @@ import net.minecraft.world.WorldServer;
 @ElegantPacket
 public class CPacketParticle implements ClientToServerPacket {
     final EnumParticleTypes particle;
-    final int count, speed;
     final float x, y, z, xv, yv, zv;
+    final int count, speed;
     public CPacketParticle(EnumParticleTypes particle, float x, float y, float z){
         this.particle = particle;
         this.count = 1;
@@ -47,7 +47,7 @@ public class CPacketParticle implements ClientToServerPacket {
         this.zv = 0f;
     }
 
-    public CPacketParticle(EnumParticleTypes particle, int count, int speed, float x, float y, float z, float xv, float yv, float zv){
+    public CPacketParticle(EnumParticleTypes particle, float x, float y, float z, float xv, float yv, float zv, int count, int speed){
         this.particle = particle;
         this.count = count;
         this.speed = speed;
@@ -61,6 +61,6 @@ public class CPacketParticle implements ClientToServerPacket {
 
     @Override
     public void onReceive(EntityPlayerMP player) {
-        ((WorldServer)player.world).spawnParticle(particle, x, y, z, count, xv, yv, zv, 0);
+        ((WorldServer)player.world).spawnParticle(particle, x, y, z, count, xv, yv, zv, speed);
     }
 }

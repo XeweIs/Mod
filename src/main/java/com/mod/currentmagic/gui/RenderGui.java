@@ -8,6 +8,6 @@ public class RenderGui {
     @SubscribeEvent
     public void onRenderGui(RenderGameOverlayEvent.Post event) {
         if (event.getType() != RenderGameOverlayEvent.ElementType.EXPERIENCE) return;
-        new CoolDownText(Minecraft.getMinecraft());
+        new TextGui(Minecraft.getMinecraft());
     }
 }
