@@ -33,5 +33,4 @@ public class MainClass
         proxy.postInit(event);
     }
 
-
 }
