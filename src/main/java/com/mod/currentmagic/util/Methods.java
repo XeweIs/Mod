@@ -2,6 +2,7 @@ package com.mod.currentmagic.util;
 
 import com.google.common.base.Function;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -24,8 +25,6 @@ public class Methods {
                         return Comparator.comparing((Function<Entity, Double>) (a -> a.getDistanceSq(_x, _y, _z)));
                     }
                 }.compareDistOf(x, y, z)).filter(a -> a != ex).orElse(null));
-
-
     }
 
     public static void registerEvents(Object[] e){
@@ -34,20 +33,13 @@ public class Methods {
         }
     }
 
-    public enum Format{strike, lardy, ital}
-    static String str;
-    public static String FormatMc(String string, Format[] format){
-        str = string;
-        if(Arrays.toString(format).contains("strike")){
-            str = "§m"+str;
-        }
-        if(Arrays.toString(format).contains("lardy")){
-            str = "§l"+str;
-        }
-        if(Arrays.toString(format).contains("ital")){
-            str = "§o"+str;
-        }
-
-        return str+"§r";
+    public static void attackEntityNoKnockBack(Entity entity, DamageSource source, float damage){
+        float vx = (float)entity.motionX;
+        float vy = (float)entity.motionY;
+        float vz = (float)entity.motionZ;
+        entity.attackEntityFrom(source, damage);
+        entity.motionX = vx;
+        entity.motionY = vy;
+        entity.motionZ = vz;
     }
 }

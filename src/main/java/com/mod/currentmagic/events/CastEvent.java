@@ -1,11 +1,17 @@
 package com.mod.currentmagic.events;
 
 import com.mod.currentmagic.ability.air.AirDash;
+import com.mod.currentmagic.ability.air.AirWhiff;
 import com.mod.currentmagic.ability.fire.FireBranch;
+import com.mod.currentmagic.ability.fire.FireTwister;
+import com.mod.currentmagic.collision.AABB;
 import com.mod.currentmagic.events.customevents.AbilityCast;
 import com.mod.currentmagic.gui.TextGui;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -16,15 +22,24 @@ import org.lwjgl.input.Keyboard;
 public class CastEvent {
 
     public int time;
-    private EntityPlayer player;
+    private final String z = "§cᚱ";
+    private final String x = "§aᛩ";
+    private final String c = "§9ᛈ";
+    private final String v = "§eᛖ";
     @SubscribeEvent
     public void onAbilityCast(AbilityCast event){
 
-        if(TextGui.comboText.equals("ZZ")){
+        if(TextGui.comboText.equals(z+z)){
             FireBranch.ability.start(event.getCaster());
         }
-        if(TextGui.comboText.equals("X")){
+        if(TextGui.comboText.equals(x+c)){
+            AirWhiff.ability.start(event.getCaster());
+        }
+        if(TextGui.comboText.equals(x)){
             AirDash.ability.start(event.getCaster());
+        }
+        if (TextGui.comboText.equals(v)) {
+            FireTwister.ability.start(event.getCaster());
         }
 
         TextGui.comboText = "";
@@ -42,8 +57,6 @@ public class CastEvent {
         } else if (!TextGui.comboText.isEmpty()) {
             time++;
         }
-
-        this.player = event.player;
     }
 
     @SubscribeEvent
@@ -51,19 +64,19 @@ public class CastEvent {
 
         //Здесь отлавливаем нажатия на комбо-клавиши и воспроизводим звук.
         if(Keyboard.isKeyDown(Keyboard.KEY_Z)){
-            TextGui.comboText = TextGui.comboText+"Z";
+            TextGui.comboText = TextGui.comboText+z;
             playSoundCombo(1f);
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_X)){
-            TextGui.comboText = TextGui.comboText+"X";
+            TextGui.comboText = TextGui.comboText+x;
             playSoundCombo(0.6f);
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_C)){
-            TextGui.comboText = TextGui.comboText+"C";
+            TextGui.comboText = TextGui.comboText+c;
             playSoundCombo(150f);
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_V)){
-            TextGui.comboText = TextGui.comboText+"V";
+            TextGui.comboText = TextGui.comboText+v;
             playSoundCombo(20f);
         }
 //        if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
@@ -80,6 +93,6 @@ public class CastEvent {
 
     @SideOnly(Side.CLIENT)
     private void playSoundCombo(float pitch){
-        player.playSound(SoundEvents.ENTITY_CREEPER_DEATH, 1f, pitch);
+        Minecraft.getMinecraft().player.playSound(SoundEvents.ENTITY_CREEPER_DEATH, 1f, pitch);
     }
 }

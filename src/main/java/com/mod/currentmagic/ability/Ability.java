@@ -12,7 +12,7 @@ import java.util.Collections;
 
 public class Ability{
     protected enum Status {active, nonacitve}
-    private Status statusAbility = Status.nonacitve;
+    protected Status statusAbility = Status.nonacitve;
     protected Status statusCoolDown = Status.nonacitve;
     protected int coolDown;
     protected String nameCoolDown;
@@ -33,15 +33,45 @@ public class Ability{
         this.maxRepeat = repeat;
     }
     protected void setCoolDown(int coolDown){
-        this.coolDown = (coolDown * 160)-1;
+        this.coolDown = (coolDown * 40)+1;
+    }
+
+    /** Активация способности и установка ей начальных свойств
+     * @param name Установка имени, отображаемого при кулдауне
+     * @param color Установка цвета для кулдауна
+     * @param coolDown Установка длительности кулдауна
+     * @param period Установка частоты обновления способности, то есть частота запуска onUpdate
+     * @param repeat Количество повторов, то есть количество запусков onUpdate
+     */
+    protected void start(EntityPlayer player, String name, String color, int coolDown, short period, short repeat){
+        if(statusCoolDown.equals(Status.active) || statusAbility.equals(Status.active)) return;
+
+        MinecraftForge.EVENT_BUS.register(this); //Регистрируем данную способность чтобы далее использовать ивенты внутри нее
+        statusAbility = Status.active; //Указываем, что способность активирована
+        this.player = player;
+        this.playerVec = player.getLookVec();
+        this.playerEyeHeight = player.eyeHeight;
+        this.playerPosVec = player.getPositionVector();
+        this.nameCoolDown = name;
+        this.colorCoolDown = color;
+        this.setCoolDown(coolDown);
+        this.setPeriod(period);
+        this.setRepeat(repeat);
     }
 
     @SubscribeEvent
-    public void onTickAbility(TickEvent event) {
+    protected void onTickAbility(TickEvent.PlayerTickEvent event) {
         if(event.side.isServer()) return;
 
         //Если активен статус способности, то есть если её юзнули.
         if (statusAbility.equals(Status.active)) {
+
+            //Если вдруг игрок умрёт во время использования способности, она отменится.
+            if(player.isDead){
+                onExit();
+                return;
+            }
+
             period--; //Каждый тик уменьшаем период. Период отвечает за частоту обновления (запуска onUpdate)активной способности.
 
             if (period == 0) {
@@ -55,7 +85,6 @@ public class Ability{
                         onExit();
                     }
                 }else{
-                    //Данным методом отменяем всю способность.
                     onExit();
                 }
             }
@@ -64,16 +93,9 @@ public class Ability{
         //Если наложили кулдаун...
         if(statusCoolDown.equals(Status.active)){
 
-            //Если вдруг игрок умрёт во время кулдауна, он у него сбросится.
-            if(player.isDead){
-                statusCoolDown = Status.nonacitve;
-                TextGui.coolDownText = new ArrayList<>();
-                return;
-            }
-
             coolDown--;
-            String pretext = colorCoolDown+"§m"+ nameCoolDown + " " + ((coolDown / 160) + 2) + "§r";
-            String initext = colorCoolDown+"§m"+ nameCoolDown + " " + ((coolDown / 160) + 1) + "§r";
+            String pretext = colorCoolDown+"§m"+ nameCoolDown + " " + ((coolDown / 40) + 2) + "§r";
+            String initext = colorCoolDown+"§m"+ nameCoolDown + " " + ((coolDown / 40) + 1) + "§r";
 
             //Данная проверка даёт знать когда нам обновлять текст в актбаре,
             //а когда его стоит и вовсе удалить, а за одно завершить этот процесс.
@@ -88,32 +110,6 @@ public class Ability{
         }
     }
 
-    /** Активация способности и установка ей начальных свойств
-     * @param name Установка имени, отображаемого при кулдауне
-     * @param color Установка цвета для кулдауна
-     * @param coolDown Установка длительности кулдауна
-     * @param period Установка частоты обновления способности, то есть частота запуска onUpdate
-     * @param repeat Количество повторов, то есть количество запусков onUpdate
-     */
-    public void start(EntityPlayer player, String name, String color, int coolDown, short period, short repeat){
-        if(statusCoolDown.equals(Status.active)) return;
-
-        MinecraftForge.EVENT_BUS.register(this);
-        statusAbility = Status.active; //Указываем, что способность активирована
-        statusCoolDown = Status.active; //Накладываем кулдаун
-        this.player = player;
-        this.playerVec = player.getLookVec();
-        this.playerEyeHeight = player.eyeHeight;
-        this.playerPosVec = player.getPositionVector();
-        this.nameCoolDown = name;
-        this.colorCoolDown = color;
-        this.setCoolDown(coolDown);
-        this.setPeriod(period);
-        this.setRepeat(repeat);
-
-        TextGui.coolDownText.add(colorCoolDown+"§m"+ nameCoolDown + " " + ((coolDown / 160) + 1) + "§r");
-    }
-
     //Обновление способности
     protected boolean onUpdate(){
         return false;
@@ -121,6 +117,8 @@ public class Ability{
 
     //Завершение способности
     protected void onExit(){
+        statusCoolDown = Status.active; //Накладываем кулдаун
+        TextGui.coolDownText.add(colorCoolDown+"§m"+ nameCoolDown + " " + ((this.coolDown / 40)+1) + "§r");
         statusAbility = Status.nonacitve;
     }
 }

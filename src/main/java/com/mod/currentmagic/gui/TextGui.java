@@ -30,11 +30,11 @@ public class TextGui extends Gui {
 
         //Выводим текст куладуна
         if(!coolDownText.isEmpty()) drawCenteredString(mc.fontRenderer, String.join("  ", coolDownText),
-                width / 2, height - 60, Integer.parseInt("FFFFFF", 16));
+                width / 2, height - 80, Integer.parseInt("FFFFFF", 16));
 
         //Выводим комбо
-        if(!comboText.isEmpty()) drawCenteredString(mc.fontRenderer, comboText,
-                width / 2, height - 80, Integer.parseInt("FFFFFF", 16));
+        if(!comboText.isEmpty()) drawCenteredString(mc.fontRenderer, "§l"+comboText,
+                width / 2, height - 100, Integer.parseInt("FFFFFF", 16));
 
     }
 }
