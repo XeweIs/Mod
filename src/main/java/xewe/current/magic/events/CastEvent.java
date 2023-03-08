@@ -1,7 +1,5 @@
 package xewe.current.magic.events;
 
-import net.minecraft.util.text.TextComponentString;
-import xewe.current.magic.Keybinds.KeybindsRegister;
 import xewe.current.magic.ability.air.*;
 import xewe.current.magic.ability.fire.*;
 import xewe.current.magic.data.Element;

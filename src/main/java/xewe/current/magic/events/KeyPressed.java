@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
-import xewe.current.magic.Keybinds.KeybindsRegister;
+import xewe.current.magic.keybinds.KeybindsRegister;
 import xewe.current.magic.gui.TextGui;
 import xewe.current.magic.util.Configs;
 

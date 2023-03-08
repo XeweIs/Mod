@@ -1,6 +1,6 @@
 package xewe.current.magic.proxy;
 
-import xewe.current.magic.Keybinds.KeybindsRegister;
+import xewe.current.magic.keybinds.KeybindsRegister;
 import xewe.current.magic.gui.RenderGui;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
