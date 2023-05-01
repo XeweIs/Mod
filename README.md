@@ -1,2 +1,3 @@
 # Current Magic
-Mod that adds several abilities for the elements of fire and air
+Мои первые попытки сделать мод. Сейчас же его структура несколько лучше по репозиторию XSonagic.
+      Cancel changes
